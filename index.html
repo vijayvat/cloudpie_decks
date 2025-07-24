@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudPie - Simplify Your Multi-Cloud Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            display: none;
+            width: 90%;
+            max-width: 1200px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 60px;
+            text-align: center;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+
+        p, li {
+            font-size: 1.3em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+        }
+
+        .pain-points, .benefits-list, .feature-list {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pain-points li, .benefits-list li, .feature-list li {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .benefits-list li {
+            border-left-color: #27ae60;
+        }
+
+        .feature-list li {
+            border-left-color: #667eea;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+
+        .feature-card h4 {
+            color: #2c3e50;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .demo-mockup {
+            background: #2c3e50;
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .demo-mockup h4 {
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+
+        .insight-example {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #f39c12;
+        }
+
+        .insight-example strong {
+            color: #e67e22;
+        }
+
+        .hierarchy-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            font-size: 1.2em;
+        }
+
+        .hierarchy-item {
+            background: #667eea;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            margin: 0 10px;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #667eea;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            color: #333;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            z-index: 1000;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin: 30px 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+            margin-right: 15px;
+        }
+
+        .logo-text {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2c3e50;
+            letter-spacing: 2px;
+        }
+
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .before, .after {
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .before {
+            background: #ffe6e6;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .after {
+            background: #e8f5e8;
+            border-left: 5px solid #27ae60;
+        }
+
+        .workflow-step {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .workflow-step h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <!-- Slide 1: Welcome -->
+        <div class="slide active">
+            <div class="logo">
+                <img src="https://www.cloudpie.io/favicon.ico" alt="CloudPie Logo" onerror="this.style.display='none'">
+                <div class="logo-text">CLOUDPIE</div>
+            </div>
+            <h1>Simplify Your Multi-Cloud DevOps</h1>
+            <p class="subtitle">Unified platform for cloud management, Infrastructure as Code, and team collaboration</p>
+            <p style="font-size: 1.2em; margin-top: 40px;">Let's see how CloudPie streamlines your entire cloud workflow</p>
+        </div>
+
+        <!-- Slide 2: Current Pain Points -->
+        <div class="slide">
+            <h2>The Multi-Cloud DevOps Challenge</h2>
+            <div class="pain-points">
+                <li>Managing multiple cloud accounts across AWS, Azure, and GCP</li>
+                <li>Terraform deployments scattered across different repositories</li>
+                <li>No unified way to query and analyze cloud resources</li>
+                <li>Project management separate from actual cloud operations</li>
+                <li>Team collaboration happens outside the technical workflow</li>
+                <li>Cloud alerts and incidents handled reactively in isolation</li>
+            </div>
+            <p style="margin-top: 30px; font-style: italic; color: #e74c3c;">
+                <strong>The result:</strong> Fragmented workflows, slower deployments, and operational chaos
+            </p>
+        </div>
+
+        <!-- Slide 3: CloudPie Organization Structure -->
+        <div class="slide">
+            <h2>How CloudPie Works</h2>
+            <p>Clean hierarchy that matches how your team actually operates:</p>
+            
+            <div class="hierarchy-flow">
+                <div class="hierarchy-item">Organization</div>
+                <div class="arrow">→</div>
+                <div class="hierarchy-item">Projects</div>
+                <div class="arrow">→</div>
+                <div class="hierarchy-item">Cloud Accounts</div>
+                <div class="arrow">→</div>
+                <div class="hierarchy-item">Workspaces</div>
+            </div>
+
+            <div class="workflow-step">
+                <h4>🏢 Organization Level</h4>
+                <p>Your company with all users managed centrally</p>
+            </div>
+            
+            <div class="workflow-step">
+                <h4>📁 Project Level</h4>
+                <p>Add team members with role-based access control (RBAC)</p>
+            </div>
+            
+            <div class="workflow-step">
+                <h4>☁️ Cloud Accounts</h4>
+                <p>Securely connect multiple AWS, Azure, and GCP accounts to each project</p>
+            </div>
+            
+            <div class="workflow-step">
+                <h4>🛠️ Terraform Workspaces</h4>
+                <p>Connect GitHub repositories and manage Infrastructure as Code deployments</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Core Capabilities -->
+        <div class="slide">
+            <h2>What You Can Do with CloudPie</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🔍 Query Your Cloud</h4>
+                    <p>Use Steampipe to query cloud resources like a database - get insights with SQL-like syntax across all your clouds.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🚀 Terraform Management</h4>
+                    <p>Create workspaces backed by GitHub repos, execute terraform apply, and see live deployment logs.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🤖 AI Insight Templates</h4>
+                    <p>Run pre-configured AI prompts for optimization insights, or create your own custom templates with your OpenAI API.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🏃‍♂️ Project Management</h4>
+                    <p>Create sprints, assign tasks to team members, and have conversations - all integrated with your cloud operations.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🚨 Alert Management</h4>
+                    <p>Configure cloud alerts, track incidents, and collaborate on resolution within the platform.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔒 Security & RBAC</h4>
+                    <p>Fine-grained role-based access control at every level - from organization to individual workspaces.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: AI Insights in Action -->
+        <div class="slide">
+            <h2>AI-Powered Insights</h2>
+            <p>Pre-built insight templates give you instant visibility into optimization opportunities:</p>
+            
+            <div class="insight-example">
+                <strong>💰 AWS Cost Optimization</strong><br>
+                "Identified 8 unused Elastic IPs and 3 underutilized EC2 instances. Potential monthly savings: $127"
+            </div>
+            
+            <div class="insight-example">
+                <strong>⚡ Azure Performance Analysis</strong><br>
+                "Found 5 VMs with consistently low CPU usage. Right-sizing recommendations available."
+            </div>
+            
+            <div class="insight-example">
+                <strong>🔒 GCP Security Review</strong><br>
+                "Detected 2 storage buckets with public access. Security hardening steps provided."
+            </div>
+
+            <div class="benefits-list" style="margin-top: 30px;">
+                <li><strong>Bring Your Own OpenAI Key:</strong> Use your API credits for custom insights</li>
+                <li><strong>Custom Templates:</strong> Create organization-specific insight queries</li>
+                <li><strong>Scheduled Analysis:</strong> Run insights automatically and get reports</li>
+            </div>
+        </div>
+
+        <!-- Slide 6: Terraform Workflow -->
+        <div class="slide">
+            <h2>Streamlined Infrastructure as Code</h2>
+            <p>Connect your GitHub repositories and manage Terraform deployments with full visibility:</p>
+            
+            <div class="demo-mockup">
+                <h4>🛠️ Workspace: Production Environment</h4>
+                <div style="margin: 20px 0;">
+                    <div>📂 GitHub Repo: company/prod-infrastructure</div>
+                    <div style="margin-left: 20px; color: #27ae60;">✅ Connected and synced</div>
+                </div>
+                <div style="margin: 20px 0;">
+                    <div>☁️ Cloud Accounts:</div>
+                    <div style="margin-left: 20px; color: #bdc3c7;">├── AWS Production (us-east-1)</div>
+                    <div style="margin-left: 20px; color: #bdc3c7;">└── Azure Production (eastus)</div>
+                </div>
+                <div style="margin: 20px 0;">
+                    <div>🚀 Last Deployment:</div>
+                    <div style="margin-left: 20px; color: #27ae60;">✅ terraform apply completed - 2 hours ago</div>
+                    <div style="margin-left: 20px; color: #bdc3c7;">📋 View live logs and output</div>
+                </div>
+            </div>
+
+            <div class="benefits-list">
+                <li>Execute terraform commands directly from the platform</li>
+                <li>Real-time deployment logs and status updates</li>
+                <li><strong>GitHub Integration:</strong> Connect your existing repos for terraform deployments</li>
+                <li>Team collaboration on infrastructure changes</li>
+            </div>
+        </div>
+
+        <!-- Slide 7: Project Management Integration -->
+        <div class="slide">
+            <h2>DevOps + Project Management</h2>
+            <p>Everything your team needs in one platform:</p>
+            
+            <div class="before-after">
+                <div class="before">
+                    <h3>Traditional Approach</h3>
+                    <ul style="list-style: none;">
+                        <li>🔴 Jira for task management</li>
+                        <li>🔴 Slack for team discussions</li>
+                        <li>🔴 AWS/Azure consoles for cloud</li>
+                        <li>🔴 Manual terraform deployments</li>
+                        <li>🔴 Separate monitoring tools</li>
+                    </ul>
+                </div>
+                <div class="after">
+                    <h3>CloudPie Approach</h3>
+                    <ul style="list-style: none;">
+                        <li>✅ Integrated sprint planning</li>
+                        <li>✅ Contextual conversations</li>
+                        <li>✅ Multi-cloud management</li>
+                        <li>✅ GitHub-connected workflows</li>
+                        <li>✅ Unified alerting and insights</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-list">
+                <li><strong>Sprint Management:</strong> Plan and track work cycles with your team</li>
+                <li><strong>Task Assignment:</strong> Assign infrastructure tasks with proper context</li>
+                <li><strong>Team Conversations:</strong> Discuss deployments and issues where they happen</li>
+                <li><strong>RBAC Integration:</strong> Project management permissions match cloud access</li>
+            </div>
+        </div>
+
+        <!-- Slide 8: Cloud Querying with Steampipe -->
+        <div class="slide">
+            <h2>Query Your Cloud Like a Database</h2>
+            <p>Use SQL to analyze your multi-cloud infrastructure with Steampipe integration:</p>
+            
+            <div class="demo-mockup">
+                <h4>💾 Example Queries</h4>
+                <div style="margin: 20px 0; color: #3498db;">
+                    -- Find all public S3 buckets<br>
+                    SELECT name, region FROM aws_s3_bucket<br>
+                    WHERE bucket_policy_is_public = true;
+                </div>
+                <div style="margin: 20px 0; color: #3498db;">
+                    -- Get cost by service across all accounts<br>
+                    SELECT service, SUM(unblended_cost_amount)<br>
+                    FROM aws_cost_by_service_daily<br>
+                    GROUP BY service ORDER BY 2 DESC;
+                </div>
+            </div>
+
+            <div class="benefits-list">
+                <li><strong>Scheduled Queries:</strong> Run reports automatically and get results via email</li>
+                <li><strong>Multi-Cloud Support:</strong> Query AWS, Azure, and GCP with unified syntax</li>
+                <li><strong>Custom Dashboards:</strong> Build views that matter to your team</li>
+                <li><strong>Export & Share:</strong> Download results or share with stakeholders</li>
+            </div>
+        </div>
+
+        <!-- Slide 9: Custom Development -->
+        <div class="slide">
+            <h2>Tailored to Your Needs</h2>
+            <p class="subtitle">CloudPie can be <span class="highlight">customized</span> to fit your unique requirements</p>
+            
+            <div style="margin: 40px 0;">
+                <h3>🚀 Custom Features Built in a Jiffy</h3>
+                <div class="feature-list">
+                    <li><strong>Custom Insight Templates:</strong> Need specific compliance reports? We'll build templates that match your audit requirements</li>
+                    <li><strong>Specialized Dashboards:</strong> Want executive-level cost summaries or technical deep-dives? Custom views tailored to your stakeholders</li>
+                    <li><strong>Integration Connectors:</strong> Connect CloudPie to your existing tools like ServiceNow, PagerDuty, or custom internal systems</li>
+                    <li><strong>Workflow Automation:</strong> Custom approval processes, automated scaling policies, or deployment pipelines specific to your organization</li>
+                    <li><strong>Reporting Extensions:</strong> Multi-cloud cost allocation, security posture reports, or resource utilization analytics designed for your business</li>
+                </div>
+            </div>
+
+            <div class="insight-example">
+                <strong>Example:</strong> "We need monthly reports showing cost breakdown by business unit across all three cloud providers, with automated alerts when any unit exceeds 80% of budget." 
+                <br><br>
+                <em>→ Custom template built and integrated within days</em>
+            </div>
+            
+            <p style="margin-top: 30px; font-size: 1.2em;">
+                CloudPie's flexible architecture means we can rapidly develop features that solve your specific challenges.
+            </p>
+        </div>
+
+        <!-- Slide 10: Getting Started -->
+        <div class="slide">
+            <h2>Ready to Unify Your Cloud Operations?</h2>
+            <p class="subtitle">Let's explore how CloudPie fits your <span class="highlight">specific workflow</span></p>
+            
+            <div style="margin: 50px 0;">
+                <h3>What we'd love to understand:</h3>
+                <div class="benefits-list" style="max-width: 700px;">
+                    <li><strong>Your current setup:</strong> Which clouds, how many accounts, team size</li>
+                    <li><strong>Terraform usage:</strong> How you manage Infrastructure as Code today</li>
+                    <li><strong>Pain points:</strong> What slows down your deployments and operations</li>
+                    <li><strong>Custom requirements:</strong> Any specific features or integrations you need</li>
+                </div>
+            </div>
+            
+            <div style="margin-top: 50px;">
+                <button class="cta-button" onclick="window.open('https://www.cloudpie.io/', '_blank')">Explore CloudPie</button>
+                <button class="cta-button" onclick="window.open('https://docs.cloudpie.io/', '_blank')">View Documentation</button>
+            </div>
+            
+            <p style="margin-top: 30px; font-size: 1.1em;">
+                <strong>Visit:</strong> cloudpie.io | docs.cloudpie.io
+            </p>
+        </div>
+    </div>
+
+    <div class="slide-counter">
+        <span id="slideNumber">1</span> / <span id="totalSlides">10</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="previousSlide()">← Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+            
+            if (currentSlide === totalSlides - 1) {
+                nextBtn.textContent = 'End';
+            } else {
+                nextBtn.textContent = 'Next →';
+            }
+        }
+
+        function showSlide(n) {
+            if (n < 0 || n >= totalSlides) return;
+            
+            slides[currentSlide].classList.remove('active');
+            currentSlide = n;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('slideNumber').textContent = currentSlide + 1;
+            updateNavigationButtons();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Initialize navigation buttons
+        updateNavigationButtons();
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === ' ') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+
+        // Click navigation (excluding buttons)
+        document.addEventListener('click', function(event) {
+            if (!event.target.classList.contains('nav-btn') && !event.target.classList.contains('cta-button')) {
+                nextSlide();
+            }
+        });
+    </script>
+</body>
+</html>
